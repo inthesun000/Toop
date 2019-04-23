@@ -4,12 +4,29 @@
 #include <vector>
 #include <iostream>
 #include <optional>
+#include <array>
+
+#include <glm/glm.hpp>
 
 #include "Logger.h"
 #include "FileManager.h"
 
 #define VK_USE_PLATFORM_WIN32_KHR
 #include <vulkan/vulkan.h>
+
+
+class VertexData
+{
+public:
+	static VkVertexInputBindingDescription GetBindingDescription();
+	static std::array < VkVertexInputAttributeDescription, 2> GetAttributeDescriptions();
+	VertexData(glm::vec2 _pos, glm::vec3 _color) : pos(_pos), color(_color) {}
+
+private:
+	//TODO: [Sun] Making Vector
+	glm::vec2 pos;
+	glm::vec3 color;
+};
 
 class BackendVulkan
 {
@@ -78,6 +95,11 @@ public:
 
 	void Draw();
 
+	void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
+		VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+	void CreateVertexBuffer();
+	
+
 	void RememberWindowSize(const uint32_t WIDTH, const uint32_t HEIGHT)
 	{
 		if (WIDTH > 0 && HEIGHT > 0)
@@ -144,6 +166,8 @@ private:
 	VkShaderModule CreateShaderModule(const std::vector<char>& code);
 	VkPipelineShaderStageCreateInfo CreateShaderStageInfo(VkShaderStageFlagBits type, VkShaderModule& module);
 
+	uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+
 private:
 	VkInstance instance;
 	VkResult result;
@@ -178,6 +202,9 @@ private:
 	std::vector<VkSemaphore> renderFinishSemaphores;
 	std::vector<VkFence> inFlightFences;
 
+	VkBuffer vertexBuffer;
+	VkDeviceMemory vertexBufferMemory;
+
 	const std::vector<const char*> validationLayers = { "VK_LAYER_LUNARG_standard_validation" };
 	const std::vector<const char*> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 
@@ -186,6 +213,13 @@ private:
 	uint32_t HEIGHT = 1;
 
 	size_t CurrentFrame = 0;
+
+	const std::vector<VertexData> verties = 
+	{ 
+		VertexData(glm::vec2({	0.0f, -0.5f	}),	glm::vec3({	1.0f, 0.5f, 0.0f })),
+		VertexData(glm::vec2({	0.5f, 0.5f	}),	glm::vec3({	0.0f, 1.0f, 0.5f })),
+		VertexData(glm::vec2({	-0.5f, 0.5f	}),	glm::vec3({	0.5f, 0.0f, 1.0f }))
+	};
 
 	//logger!!
 	Log::Logger localLogger;
@@ -197,3 +231,9 @@ private:
 #endif
 };
 
+//class VertexBuffer
+//{
+//private:
+//	VkBuffer bufferData;
+//	VertexData vertices;
+//};
