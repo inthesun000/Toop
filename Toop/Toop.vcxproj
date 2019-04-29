@@ -162,15 +162,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AWBuffer.cpp" />
+    <ClCompile Include="AWFileManager.cpp" />
+    <ClCompile Include="AWVector.cpp" />
+    <ClCompile Include="AWVertex.cpp" />
+    <ClCompile Include="AWVkVertex.cpp" />
     <ClCompile Include="BackendVulkan.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="AWLogger.cpp" />
+    <ClCompile Include="Application.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AWBuffer.h" />
-    <ClInclude Include="AWCore.h" />
+    <ClInclude Include="AWFileManager.h" />
+    <ClInclude Include="AWFoundation.h" />
+    <ClInclude Include="AWInclude.h" />
+    <ClInclude Include="AWVector.h" />
+    <ClInclude Include="AWVertex.h" />
+    <ClInclude Include="AWVkVertex.h" />
     <ClInclude Include="BackendVulkan.h" />
-    <ClInclude Include="Logger.h" />
+    <ClInclude Include="AWLogger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

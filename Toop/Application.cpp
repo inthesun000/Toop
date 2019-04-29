@@ -1,5 +1,5 @@
 
-#include "AWCore.h"
+#include "AWInclude.h"
 #include "BackendVulkan.h"
 
 class HelloTriangleApplication
@@ -116,7 +116,7 @@ public:
 private:
 	BackendVulkan * vulkan = nullptr;
 	GLFWwindow * window = nullptr;
-	Log::Logger localLogger;
+	Log::AWLogger localLogger;
 
 };
 

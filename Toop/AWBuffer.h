@@ -1,5 +1,5 @@
 #pragma once
-#include "AWCore.h"
+#include "AWInclude.h"
 
 class AWBuffer
 {
@@ -8,7 +8,5 @@ public:
 	virtual ~AWBuffer();
 
 private:
-	VkBuffer buffer;
-	VkDeviceMemory memory;
 };
 

@@ -1,8 +1,7 @@
 ﻿#pragma once
 
-#include "AWCore.h"
-#include "Logger.h"
-#include "FileManager.h"
+#include "AWInclude.h"
+#include "AWLogger.h"
 
 
 class BackendVulkan
@@ -182,7 +181,7 @@ private:
 	size_t CurrentFrame = 0;
 
 	//logger!!
-	Log::Logger localLogger;
+	Log::AWLogger localLogger;
 
 #ifdef NDEBUG
 	const bool enableValidationLayers = false;

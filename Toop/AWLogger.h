@@ -50,7 +50,7 @@ namespace Log
 	};
 
 
-	class Logger
+	class AWLogger
 	{
 	private:
 		void* console;
@@ -64,8 +64,8 @@ namespace Log
 		const char* AttachWord(State state);
 
 	public:
-		Logger();
-		~Logger();
+		AWLogger();
+		~AWLogger();
 
 		void Logging(const Message message);
 		void Logging(LEVEL level, TASK task, State state, const char* message);

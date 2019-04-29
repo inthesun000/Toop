@@ -3,10 +3,12 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include <optional>
-
+#include <set>
 #include <functional>
 #include <cstdlib>
+#include <array>
 
 #define VK_USE_PLATFORM_WIN32_KHR
 #include <vulkan/vulkan.h>

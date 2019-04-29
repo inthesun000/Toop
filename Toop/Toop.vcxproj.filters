@@ -5,44 +5,72 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="AWFoundation">
+    <Filter Include="AW">
       <UniqueIdentifier>{323924a4-7b5c-4828-a58d-0418320eead7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AW\GraphicsAPI">
+      <UniqueIdentifier>{4088038e-235c-4de0-baf1-ab9f8e962140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AW\GraphicsAPI\Vulkan">
+      <UniqueIdentifier>{ca3dd91a-e404-44df-a3d6-858f04bb6db1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AW\Foundation">
+      <UniqueIdentifier>{b24ec1f5-f435-4729-ac33-d0c9f59b2b59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="AWBuffer.cpp">
+      <Filter>AW\Foundation</Filter>
     </ClCompile>
     <ClCompile Include="BackendVulkan.cpp">
+      <Filter>AW\GraphicsAPI\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="AWLogger.cpp">
+      <Filter>AW\Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="AWFileManager.cpp">
+      <Filter>AW\Foundation</Filter>
     </ClCompile>
-    <ClCompile Include="AWBuffer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="AWVertex.cpp">
+      <Filter>AW\Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="AWVkVertex.cpp">
+      <Filter>AW\GraphicsAPI\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="AWVector.cpp">
+      <Filter>AW\Foundation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackendVulkan.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AWCore.h">
-      <Filter>AWFoundation</Filter>
+    <ClInclude Include="AWInclude.h">
+      <Filter>AW</Filter>
     </ClInclude>
     <ClInclude Include="AWBuffer.h">
-      <Filter>Header Files</Filter>
+      <Filter>AW\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendVulkan.h">
+      <Filter>AW\GraphicsAPI\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="AWLogger.h">
+      <Filter>AW\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="AWFileManager.h">
+      <Filter>AW\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="AWVertex.h">
+      <Filter>AW\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="AWVkVertex.h">
+      <Filter>AW\GraphicsAPI\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="AWVector.h">
+      <Filter>AW\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="AWFoundation.h">
+      <Filter>AW</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
