@@ -1,15 +1,9 @@
 ﻿#pragma once
 
-#include <stdexcept>
-#include <vector>
-#include <iostream>
-#include <optional>
-
+#include "AWCore.h"
 #include "Logger.h"
 #include "FileManager.h"
 
-#define VK_USE_PLATFORM_WIN32_KHR
-#include <vulkan/vulkan.h>
 
 class BackendVulkan
 {

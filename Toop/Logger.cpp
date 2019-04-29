@@ -1,8 +1,5 @@
 #include "Logger.h"
-
-#if _WIN32
-#include "Windows.h"
-#endif
+#include "AWCore.h"
 
 using namespace Log;
 
