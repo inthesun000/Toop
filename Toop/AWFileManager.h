@@ -11,7 +11,7 @@ public:
 	//MUSTDO: [Sun] Control asset path
 	static std::string GetAssetPath()
 	{
-		std::string assetPath("../../Asset/");
+		std::string assetPath("../Asset/");
 		return assetPath;
 	}
 

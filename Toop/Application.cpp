@@ -72,6 +72,7 @@ private:
 		vulkan->CreateFramebuffers();
 		vulkan->CreateCommandPool();
 		vulkan->CreateVertexBuffer();
+		vulkan->CreateIndexBuffer();
 		vulkan->CreateCommandBuffers();
 
 		vulkan->CreateSyncObjects();

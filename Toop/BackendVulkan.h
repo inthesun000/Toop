@@ -85,6 +85,18 @@ public:
 		VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void CreateVertexBuffer();
 	
+	void CopyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+
+	void CreateIndexBuffer();
+
+	void CreateDescriptorSetLayout();
+	void CreateUniformBuffers();
+
+	void CreateDescriptorPool();
+
+	void RecreateSwapChain();
+
+	void UpdateUniformBuffer(uint32_t currentImage);
 
 	void RememberWindowSize(const uint32_t WIDTH, const uint32_t HEIGHT)
 	{
@@ -188,8 +200,14 @@ private:
 	std::vector<VkSemaphore> renderFinishSemaphores;
 	std::vector<VkFence> inFlightFences;
 
-	VkBuffer vertexBuffer;
-	VkDeviceMemory vertexBufferMemory;
+	VkBuffer vertexBuffer, indexBuffer;
+	VkDeviceMemory vertexBufferMemory, indexBufferMemory;
+
+	VkDescriptorSetLayout descriptorSetLayout;
+	VkPipelineLayout pipelineLayout;
+
+	std::vector<VkBuffer> uniformBuffers;
+	std::vector<VkDeviceMemory> uniformBuffersMemory;
 
 	const std::vector<const char*> validationLayers = { "VK_LAYER_LUNARG_standard_validation" };
 	const std::vector<const char*> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
@@ -200,11 +218,76 @@ private:
 
 	size_t CurrentFrame = 0;
 
-	std::vector<AWVkVertex> verties = 
-	{ 
-		AWVertex(AWVec2<float>(0.0f, -0.5f), AWVec3<float>(1.0f, 0.5f, 0.0f)),
-		AWVertex(AWVec2<float>(0.5f, 0.5f), AWVec3<float>(0.0f, 1.0f, 0.5f)),
-		AWVertex(AWVec2<float>(-0.5f, 0.5f), AWVec3<float>(0.5f, 0.0f, 1.0f))
+	struct UniformBufferObject
+	{
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 proj;
+	};
+	
+	const std::vector<uint16_t> indices = 
+	{
+		0, 1, 2, 2, 3, 0
+	};
+
+	std::vector<AWVkVertex> verties =
+	{
+		AWVertex(AWVec2<float>(-0.5f, -0.5f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.5f, -0.5f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.5f, 0.5f), AWVec3<float>(0.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(-0.5f, 0.5f), AWVec3<float>(0.0f, 0.8f, 1.0f))
+		/*
+		//first
+		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.438f, -0.791f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+																			   
+		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+																			   
+		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.367f, -0.298f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+																			   
+		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.367f, -0.298f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.149f, -0.238f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		// second
+		AWVertex(AWVec2<float>(0.283f, -0.014f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.432f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.432f, 0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		AWVertex(AWVec2<float>(0.432f, 0.164f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
+		AWVertex(AWVec2<float>(0.432f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.746f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		AWVertex(AWVec2<float>(0.432f, 0.164f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
+		AWVertex(AWVec2<float>(0.746f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.746f, 0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		AWVertex(AWVec2<float>(0.746f, -0.164f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
+		AWVertex(AWVec2<float>(0.904f, 0.005f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.746f, 0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		//third
+		AWVertex(AWVec2<float>(0.149f, 0.238f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
+		AWVertex(AWVec2<float>(0.367f, 0.292f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.074f, 0.447f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		AWVertex(AWVec2<float>(0.074f, 0.447f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
+		AWVertex(AWVec2<float>(0.367f, 0.292f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.220f, 0.740f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		AWVertex(AWVec2<float>(0.220f, 0.740f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
+		AWVertex(AWVec2<float>(0.367f, 0.292f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.498f, 0.582f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+
+		AWVertex(AWVec2<float>(0.220f, 0.740f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
+		AWVertex(AWVec2<float>(0.498f, 0.582f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
+		AWVertex(AWVec2<float>(0.426f, 0.791f), AWVec3<float>(1.0f, 0.8f, 0.0f))
+		*/
 	};
 	//-0.5, 0.5
 	//logger!!
