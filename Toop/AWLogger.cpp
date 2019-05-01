@@ -1,29 +1,26 @@
-#include "Logger.h"
-
-#if _WIN32
-#include "Windows.h"
-#endif
+#include "AWLogger.h"
+#include "AWInclude.h"
 
 using namespace Log;
 
-Logger::Logger() 
+AWLogger::AWLogger() 
 {
 	console = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 
-Logger::~Logger()
+AWLogger::~AWLogger()
 {
 }
 
-void Logger::Logging(const Log::Message message)
+void AWLogger::Logging(const Log::Message message)
 {
 	Coloring(message.level);
 	PrintConsole(AttachWord(message.task), false);
 	PrintConsole(message.message, true);
 }
 
-void Logger::Logging(LEVEL level, TASK task, State state, const char* message)
+void AWLogger::Logging(LEVEL level, TASK task, State state, const char* message)
 {
 	PrintConsole(AttachWord(task), false);
 
@@ -34,7 +31,7 @@ void Logger::Logging(LEVEL level, TASK task, State state, const char* message)
 	PrintConsole(message, true);
 }
 
-int Logger::Coloring(Log::LEVEL level)
+int AWLogger::Coloring(Log::LEVEL level)
 {
 	COLOR color = COLOR::WHITE;
 	switch (level)
@@ -60,7 +57,7 @@ int Logger::Coloring(Log::LEVEL level)
 }
 
 
-int Logger::Coloring(Log::COLOR Color)
+int AWLogger::Coloring(Log::COLOR Color)
 {
 	FlushConsoleInputBuffer(console);
 	SetConsoleTextAttribute(console, static_cast<int>(Color));
@@ -69,7 +66,7 @@ int Logger::Coloring(Log::COLOR Color)
 }
 
 
-void Log::Logger::PrintConsole(const char * message, bool useEndline)
+void Log::AWLogger::PrintConsole(const char * message, bool useEndline)
 {
 	if (useEndline)
 		std::cout << message << std::endl;
@@ -77,7 +74,7 @@ void Log::Logger::PrintConsole(const char * message, bool useEndline)
 		std::cout << message;
 }
 
-const char * Log::Logger::AttachWord(LEVEL level)
+const char * Log::AWLogger::AttachWord(LEVEL level)
 {
 	switch (level)
 	{
@@ -95,7 +92,7 @@ const char * Log::Logger::AttachWord(LEVEL level)
 	}
 }
 
-const char* Log::Logger::AttachWord(TASK task)
+const char* Log::AWLogger::AttachWord(TASK task)
 {
 	switch (task)
 	{
@@ -116,7 +113,7 @@ const char* Log::Logger::AttachWord(TASK task)
 	return nullptr;
 }
 
-const char * Log::Logger::AttachWord(State state)
+const char * Log::AWLogger::AttachWord(State state)
 {
 	switch (state)
 	{

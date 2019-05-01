@@ -109,12 +109,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.1.73.0\Include;D:\Utility\glm-0.9.9.3\glm;D:\Utility\glfw-3.2.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\Utility\glfw-3.3.bin.WIN64\glfw-3.3.bin.WIN64\include;F:\Utility\1.1.106.0\Include;C:\VulkanSDK\1.1.73.0\Include;D:\Utility\glm-0.9.9.3\glm;D:\Utility\glfw-3.2.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\VulkanSDK\1.1.73.0\Lib;D:\Utility\glfw-3.2.1.bin.WIN64\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\Utility\glfw-3.3.bin.WIN64\glfw-3.3.bin.WIN64\lib-vc2015;F:\Utility\1.1.106.0\Lib;C:\VulkanSDK\1.1.73.0\Lib;D:\Utility\glfw-3.2.1.bin.WIN64\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -161,13 +161,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AWBuffer.cpp" />
+    <ClCompile Include="AWFileManager.cpp" />
+    <ClCompile Include="AWVector.cpp" />
+    <ClCompile Include="AWVertex.cpp" />
+    <ClCompile Include="AWVkVertex.cpp" />
     <ClCompile Include="BackendVulkan.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="AWLogger.cpp" />
+    <ClCompile Include="Application.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AWBuffer.h" />
+    <ClInclude Include="AWFileManager.h" />
+    <ClInclude Include="AWFoundation.h" />
+    <ClInclude Include="AWInclude.h" />
+    <ClInclude Include="AWVector.h" />
+    <ClInclude Include="AWVertex.h" />
+    <ClInclude Include="AWVkVertex.h" />
     <ClInclude Include="BackendVulkan.h" />
-    <ClInclude Include="Logger.h" />
+    <ClInclude Include="AWLogger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

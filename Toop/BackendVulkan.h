@@ -8,25 +8,11 @@
 
 #include <glm/glm.hpp>
 
-#include "Logger.h"
-#include "FileManager.h"
+#include "AWLogger.h"
 
-#define VK_USE_PLATFORM_WIN32_KHR
-#include <vulkan/vulkan.h>
+#include "AWInclude.h"
+#include "AWVkVertex.h"
 
-
-class VertexData
-{
-public:
-	static VkVertexInputBindingDescription GetBindingDescription();
-	static std::array < VkVertexInputAttributeDescription, 2> GetAttributeDescriptions();
-	VertexData(glm::vec2 _pos, glm::vec3 _color) : pos(_pos), color(_color) {}
-
-private:
-	//TODO: [Sun] Making Vector
-	glm::vec2 pos;
-	glm::vec3 color;
-};
 
 class BackendVulkan
 {
@@ -214,15 +200,15 @@ private:
 
 	size_t CurrentFrame = 0;
 
-	const std::vector<VertexData> verties = 
+	std::vector<AWVkVertex> verties = 
 	{ 
-		VertexData(glm::vec2({	0.0f, -0.5f	}),	glm::vec3({	1.0f, 0.5f, 0.0f })),
-		VertexData(glm::vec2({	0.5f, 0.5f	}),	glm::vec3({	0.0f, 1.0f, 0.5f })),
-		VertexData(glm::vec2({	-0.5f, 0.5f	}),	glm::vec3({	0.5f, 0.0f, 1.0f }))
+		AWVertex(AWVec2<float>(0.0f, -0.5f), AWVec3<float>(1.0f, 0.5f, 0.0f)),
+		AWVertex(AWVec2<float>(0.5f, 0.5f), AWVec3<float>(0.0f, 1.0f, 0.5f)),
+		AWVertex(AWVec2<float>(-0.5f, 0.5f), AWVec3<float>(0.5f, 0.0f, 1.0f))
 	};
-
+	//-0.5, 0.5
 	//logger!!
-	Log::Logger localLogger;
+	Log::AWLogger localLogger;
 
 #ifdef NDEBUG
 	const bool enableValidationLayers = false;
