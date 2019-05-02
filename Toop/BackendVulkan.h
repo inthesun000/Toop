@@ -93,6 +93,7 @@ public:
 	void CreateUniformBuffers();
 
 	void CreateDescriptorPool();
+	void CreateDescriptorSets();
 
 	void RecreateSwapChain();
 
@@ -204,7 +205,8 @@ private:
 	VkDeviceMemory vertexBufferMemory, indexBufferMemory;
 
 	VkDescriptorSetLayout descriptorSetLayout;
-	VkPipelineLayout pipelineLayout;
+	VkDescriptorPool descriptorPool;
+	std::vector<VkDescriptorSet> descriptorSets;
 
 	std::vector<VkBuffer> uniformBuffers;
 	std::vector<VkDeviceMemory> uniformBuffersMemory;
@@ -220,9 +222,9 @@ private:
 
 	struct UniformBufferObject
 	{
-		glm::mat4 model;
-		glm::mat4 view;
-		glm::mat4 proj;
+		alignas(16) glm::mat4 model;
+		alignas(16) glm::mat4 view;
+		alignas(16) glm::mat4 proj;
 	};
 	
 	const std::vector<uint16_t> indices = 

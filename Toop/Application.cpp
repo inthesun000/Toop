@@ -67,12 +67,17 @@ private:
 		vulkan->CreateImageViews();
 
 		vulkan->CreateRenderPass();
+		vulkan->CreateDescriptorSetLayout();
 		vulkan->CreateGraphicsPipeline();
 
 		vulkan->CreateFramebuffers();
 		vulkan->CreateCommandPool();
 		vulkan->CreateVertexBuffer();
 		vulkan->CreateIndexBuffer();
+		vulkan->CreateUniformBuffers();
+		vulkan->CreateDescriptorPool();
+		vulkan->CreateDescriptorSets();
+
 		vulkan->CreateCommandBuffers();
 
 		vulkan->CreateSyncObjects();
