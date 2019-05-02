@@ -2,7 +2,7 @@
 
 namespace Log
 {
-	enum LEVEL
+	enum Level
 	{
 		Error=0,
 		Warring,
@@ -16,7 +16,7 @@ namespace Log
 		Done,		
 	};
 
-	enum TASK
+	enum Task
 	{
 		Application,
 		EngineInitialization,
@@ -27,11 +27,11 @@ namespace Log
 
 	struct Message
 	{
-		LEVEL level;
-		TASK task;
+		Level level;
+		Task task;
 		//MUSTDO: [Sun] You Support Unicode characters
 		char* message = nullptr;
-		Message(LEVEL _level, TASK _task,char* _message)
+		Message(Level _level, Task _task,char* _message)
 		{
 			level = level;
 			message = message;
@@ -39,14 +39,14 @@ namespace Log
 		}
 	};
 
-	enum COLOR
+	enum Color
 	{
-		WHITE = 7,
-		GRAY = 8,
-		YELLOW = 14,
-		RED = 12,
-		MINT = 11,
-		GRAYMINT = 3
+		White = 7,
+		Gray = 8,
+		Yellow = 14,
+		Red = 12,
+		Mint = 11,
+		GrayMint = 3
 	};
 
 
@@ -56,11 +56,11 @@ namespace Log
 		void* console;
 
 	private:
-		int Coloring(LEVEL level);
-		int Coloring(COLOR color);
-		void PrintConsole(const char* message, bool useEndline);
-		const char* AttachWord(LEVEL level);
-		const char* AttachWord(TASK task);
+		int Coloring(Level level);
+		int Coloring(Color color);
+		void PrintConsole(const char* message, bool useEndLine);
+		const char* AttachWord(Level level);
+		const char* AttachWord(Task task);
 		const char* AttachWord(State state);
 
 	public:
@@ -68,7 +68,7 @@ namespace Log
 		~AWLogger();
 
 		void Logging(const Message message);
-		void Logging(LEVEL level, TASK task, State state, const char* message);
+		void Logging(Level level, Task task, State state, const char* message);
 
 	};
 }

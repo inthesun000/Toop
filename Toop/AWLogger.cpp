@@ -20,33 +20,33 @@ void AWLogger::Logging(const Log::Message message)
 	PrintConsole(message.message, true);
 }
 
-void AWLogger::Logging(LEVEL level, TASK task, State state, const char* message)
+void AWLogger::Logging(Level level, Task task, State state, const char* message)
 {
 	PrintConsole(AttachWord(task), false);
 
-	Coloring(COLOR::MINT);
+	Coloring(Color::Mint);
 	PrintConsole(AttachWord(state), false);
 
 	Coloring(level);
 	PrintConsole(message, true);
 }
 
-int AWLogger::Coloring(Log::LEVEL level)
+int AWLogger::Coloring(Log::Level level)
 {
-	COLOR color = COLOR::WHITE;
+	Color color = Color::White;
 	switch (level)
 	{
-	case LEVEL::Normal:
-		color = COLOR::WHITE;
+	case Level::Normal:
+		color = Color::White;
 		break;
-	case LEVEL::Warring:
-		color = COLOR::YELLOW;
+	case Level::Warring:
+		color = Color::Yellow;
 		break;
-	case LEVEL::Error:
-		color = COLOR::RED;
+	case Level::Error:
+		color = Color::Red;
 		break;
 	default:
-		color = COLOR::GRAY;
+		color = Color::Gray;
 		break;
 	}
 
@@ -57,12 +57,12 @@ int AWLogger::Coloring(Log::LEVEL level)
 }
 
 
-int AWLogger::Coloring(Log::COLOR Color)
+int AWLogger::Coloring(Log::Color color)
 {
 	FlushConsoleInputBuffer(console);
-	SetConsoleTextAttribute(console, static_cast<int>(Color));
+	SetConsoleTextAttribute(console, static_cast<int>(color));
 
-	return static_cast<int>(Color);
+	return static_cast<int>(color);
 }
 
 
@@ -74,7 +74,7 @@ void Log::AWLogger::PrintConsole(const char * message, bool useEndline)
 		std::cout << message;
 }
 
-const char * Log::AWLogger::AttachWord(LEVEL level)
+const char * Log::AWLogger::AttachWord(Level level)
 {
 	switch (level)
 	{
@@ -92,7 +92,7 @@ const char * Log::AWLogger::AttachWord(LEVEL level)
 	}
 }
 
-const char* Log::AWLogger::AttachWord(TASK task)
+const char* Log::AWLogger::AttachWord(Task task)
 {
 	switch (task)
 	{

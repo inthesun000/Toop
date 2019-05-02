@@ -23,12 +23,12 @@ private:
 
 		window = glfwCreateWindow(WIDTH, HEIGHT, "vulkan", nullptr, nullptr);
 
-		localLogger.Logging(Log::LEVEL::Normal, Log::TASK::Application, Log::State::Done, "...Created Window");
+		localLogger.Logging(Log::Level::Normal, Log::Task::Application, Log::State::Done, "...Created Window");
 	}
 
 	void InitVulkan()
 	{
-		localLogger.Logging(Log::LEVEL::Normal, Log::TASK::Application, Log::State::Initialization, "...Create Vulkan");
+		localLogger.Logging(Log::Level::Normal, Log::Task::Application, Log::State::Initialization, "...Create Vulkan");
 
 		//MUSTDO: [Sun] develop memory allocator
 		vulkan = new BackendVulkan();
@@ -85,7 +85,7 @@ private:
 
 	void MainLoop()
 	{
-		localLogger.Logging(Log::LEVEL::Normal, Log::TASK::Application, Log::State::Initialization, "...Start Main loop");
+		localLogger.Logging(Log::Level::Normal, Log::Task::Application, Log::State::Initialization, "...Start Main loop");
 		while (!glfwWindowShouldClose(window))
 		{
 			// catch events
@@ -109,7 +109,7 @@ private:
 		glfwDestroyWindow(window);
 		glfwTerminate();
 
-		localLogger.Logging(Log::LEVEL::Normal, Log::TASK::Application, Log::State::Done, "...CleanUp Application");
+		localLogger.Logging(Log::Level::Normal, Log::Task::Application, Log::State::Done, "...CleanUp Application");
 	}
 public:
 	const int WIDTH = 800;

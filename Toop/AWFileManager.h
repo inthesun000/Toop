@@ -22,7 +22,7 @@ public:
 		if (!file.is_open())
 		{
 			Log::AWLogger logger;
-			logger.Logging(Log::LEVEL::Error, Log::TASK::Application, Log::State::Progress, "!!!Failed to open file");
+			logger.Logging(Log::Level::Error, Log::Task::Application, Log::State::Progress, "!!!Failed to open file");
 			throw std::runtime_error("failed to open file!");
 		}
 
