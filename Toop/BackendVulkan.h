@@ -6,11 +6,12 @@
 #include <optional>
 #include <array>
 
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "AWLogger.h"
-
-#include "AWInclude.h"
 #include "AWVkVertex.h"
 
 
@@ -95,6 +96,30 @@ public:
 	void CreateDescriptorPool();
 	void CreateDescriptorSets();
 
+	void CreateTextureImage();
+	void CreateImage(uint32_t width, uint32_t height, VkFormat format, 
+		VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties,
+		VkImage& image, VkDeviceMemory& imageMemory);
+
+	VkCommandBuffer BeginSingleTimeCommands();
+	void EndSingleTImeCommands(VkCommandBuffer commandBuffer);
+
+	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout,
+		VkImageLayout newLayout);
+
+	void CopyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
+
+	void CreateTextureImageView();
+	VkImageView CreateImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
+	void CreateTextureSampler();
+
+	void CreateDepthResource();
+	VkFormat FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling,
+		VkFormatFeatureFlags features);
+
+	VkFormat FindDepthFormat();
+	bool HasStencilComponent(VkFormat format);
+
 	void RecreateSwapChain();
 
 	void UpdateUniformBuffer(uint32_t currentImage);
@@ -125,11 +150,6 @@ public:
 		pObjects	: 메시지와 관련된 Vulkan 개체 핸들의 배열
 		objectCount	: 배열에 있는 객체의 수
 	*/
-	static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallBack(
-		VkDebugUtilsMessageSeverityFlagBitsEXT	messageSeverity,
-		VkDebugUtilsMessageTypeFlagsEXT			messageType,
-		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-		void* pUserData);
 
 protected:
 	QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
@@ -211,6 +231,16 @@ private:
 	std::vector<VkBuffer> uniformBuffers;
 	std::vector<VkDeviceMemory> uniformBuffersMemory;
 
+	VkImage textureImage;
+	VkDeviceMemory textureImageMemory;
+
+	VkImageView textureImageView;
+	VkSampler textureSampler;
+
+	VkImage depthImage;
+	VkDeviceMemory depthImageMemory;
+	VkImageView depthImageView;
+
 	const std::vector<const char*> validationLayers = { "VK_LAYER_LUNARG_standard_validation" };
 	const std::vector<const char*> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 
@@ -229,15 +259,21 @@ private:
 	
 	const std::vector<uint16_t> indices = 
 	{
-		0, 1, 2, 2, 3, 0
+		0, 1, 2, 2, 3, 0,
+		4, 5, 6, 6, 7, 4
 	};
-
+	
 	std::vector<AWVkVertex> verties =
 	{
-		AWVertex(AWVec2<float>(-0.5f, -0.5f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.5f, -0.5f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.5f, 0.5f), AWVec3<float>(0.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(-0.5f, 0.5f), AWVec3<float>(0.0f, 0.8f, 1.0f))
+		AWVertex(AWVec3<float>(-0.5f, -0.5f, 0.0f), AWVec3<float>(0.6f, 0.577f, 0.0f), AWVec2<float>(1.0f, 0.0f)),
+		AWVertex(AWVec3<float>(0.5f, -0.5f, 0.0f), AWVec3<float>(1.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 0.0f)),
+		AWVertex(AWVec3<float>(0.5f, 0.5f, 0.0f), AWVec3<float>(0.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 1.0f)),
+		AWVertex(AWVec3<float>(-0.5f, 0.5f, 0.0f), AWVec3<float>(0.0f, 0.8f, 1.0f), AWVec2<float>(1.0f, 1.0f)),
+
+		AWVertex(AWVec3<float>(-0.5f, -0.5f, -0.5f), AWVec3<float>(0.6f, 0.577f, 0.0f), AWVec2<float>(1.0f, 0.0f)),
+		AWVertex(AWVec3<float>(0.5f, -0.5f, -0.5f), AWVec3<float>(1.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 0.0f)),
+		AWVertex(AWVec3<float>(0.5f, 0.5f, -0.5f), AWVec3<float>(0.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 1.0f)),
+		AWVertex(AWVec3<float>(-0.5f, 0.5f, -0.5f), AWVec3<float>(0.0f, 0.8f, 1.0f), AWVec2<float>(1.0f, 1.0f))
 		/*
 		//first
 		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),

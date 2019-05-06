@@ -1,5 +1,5 @@
-#include "AWLogger.h"
 #include "AWInclude.h"
+#include "AWLogger.h"
 
 using namespace Log;
 

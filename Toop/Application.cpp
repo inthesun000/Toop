@@ -70,8 +70,14 @@ private:
 		vulkan->CreateDescriptorSetLayout();
 		vulkan->CreateGraphicsPipeline();
 
-		vulkan->CreateFramebuffers();
 		vulkan->CreateCommandPool();
+		vulkan->CreateDepthResource();
+		vulkan->CreateFramebuffers();
+		
+		vulkan->CreateTextureImage();
+		vulkan->CreateTextureImageView();
+		vulkan->CreateTextureSampler();
+
 		vulkan->CreateVertexBuffer();
 		vulkan->CreateIndexBuffer();
 		vulkan->CreateUniformBuffers();

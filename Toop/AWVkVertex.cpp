@@ -1,3 +1,4 @@
+#include "AWInclude.h"
 #include "AWVkVertex.h"
 
 
@@ -17,20 +18,25 @@ VkVertexInputBindingDescription AWVkVertex::GetVertexBindingDescription()
 }
 
 
-std::array<VkVertexInputAttributeDescription, 2> AWVkVertex::GetVertexAttributeDescription()
+std::array<VkVertexInputAttributeDescription, 3> AWVkVertex::GetVertexAttributeDescription()
 {
 	//TODO: How to use general perpose?
-	std::array<VkVertexInputAttributeDescription, 2> attributeDesc = {};
+	std::array<VkVertexInputAttributeDescription, 3> attributeDesc = {};
 
 	attributeDesc[0].binding = 0;
 	attributeDesc[0].location = 0;
-	attributeDesc[0].format = VK_FORMAT_R32G32_SFLOAT;
+	attributeDesc[0].format = VK_FORMAT_R32G32B32_SFLOAT;
 	attributeDesc[0].offset = offsetof(AWVertex,pos);
 
 	attributeDesc[1].binding = 0;
 	attributeDesc[1].location = 1;
 	attributeDesc[1].format = VK_FORMAT_R32G32B32_SFLOAT;
 	attributeDesc[1].offset = offsetof(AWVertex,color);
+
+	attributeDesc[2].binding = 0;
+	attributeDesc[2].location = 2;
+	attributeDesc[2].format = VK_FORMAT_R32G32_SFLOAT;
+	attributeDesc[2].offset = offsetof(AWVertex, texCoord);
 
 	return attributeDesc;
 }

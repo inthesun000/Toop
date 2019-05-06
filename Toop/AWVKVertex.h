@@ -1,23 +1,25 @@
 #pragma once
 #include "AWFoundation.h"
-#include "AWInclude.h"
 
 //template <typename Vertex>
 struct AWVertex
 {
-	AWVec2<float> pos;
+	AWVec3<float> pos;
 	AWVec3<float> color;
+	AWVec2<float> texCoord;
 
-	AWVertex(AWVec2<float>& _pos, AWVec3<float>& _color)
+	AWVertex(AWVec3<float>& _pos, AWVec3<float>& _color, AWVec2<float>& _texCoord)
 	{
 		pos = _pos;
 		color = _color;
+		texCoord = _texCoord;
 	}
 
-	AWVertex(AWVec2<float>&& _pos, AWVec3<float>&& _color)
+	AWVertex(AWVec3<float>&& _pos, AWVec3<float>&& _color, AWVec2<float>&& _texCoord)
 	{
 		pos = _pos;
 		color = _color;
+		texCoord = _texCoord;
 	}
 };
 
@@ -33,7 +35,7 @@ public:
 	~AWVkVertex();
 
 	VkVertexInputBindingDescription GetVertexBindingDescription();
-	std::array<VkVertexInputAttributeDescription, 2> GetVertexAttributeDescription();
+	std::array<VkVertexInputAttributeDescription, 3> GetVertexAttributeDescription();
 };
 
 
