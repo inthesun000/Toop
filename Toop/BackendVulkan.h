@@ -21,9 +21,9 @@ public:
 	struct QueueFamilyIndices
 	{
 		std::optional<uint32_t> graphicsFamily;
-		/* presentation은 Queue의 특정 기능이기 떄문에 
+		/* presentation은 Queue의 특정 기능이기 때문에
 		실제로 우리가 만든 표면에 presentation을
-		지원하는 큐 패밀리를 찾아야 함. 
+		지원하는 큐 패밀리를 찾아야 함.
 		draw command를 지원하는 queue family와 presentation을 지원하는
 		queue family는 overlap이 안될 수 있음.
 		*/
@@ -35,7 +35,7 @@ public:
 		}
 	};
 
-	/* 
+	/*
 	*	VkSurfaceCapabilitiesKHR
 	*	VkSurfaceFormatKHR
 	*	VkPresentModeKHR
@@ -85,7 +85,7 @@ public:
 	void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
 		VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void CreateVertexBuffer();
-	
+
 	void CopyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 
 	void CreateIndexBuffer();
@@ -97,7 +97,7 @@ public:
 	void CreateDescriptorSets();
 
 	void CreateTextureImage();
-	void CreateImage(uint32_t width, uint32_t height, VkFormat format, 
+	void CreateImage(uint32_t width, uint32_t height, VkFormat format,
 		VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties,
 		VkImage& image, VkDeviceMemory& imageMemory);
 
@@ -139,12 +139,12 @@ public:
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT	: 자원 생성과 같은 정보 메시지
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARRING_BIT_EXT	: 반드시 오류는 아니지만 응용프로그램의 버그일 가능성이 있는 동작에 대한 메시지
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT	: 유효하지 않아 충돌을 일으킬 수 있는 동작에 대한 메시지
-	
+
 	@param VkDebugUtilsMessageTypeFlagsEXT messageType
 		VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT		: 사양이나 성능과 관련이 없는 이벤트가 발생했습니다.
 		VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT	: 사양을 위반하거나 실수를 나타낼 수 있는 문제가 발생했습니다.
 		VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT	: Vulkan의 잠재적인 비최적 사용
-	
+
 	@param VkDebugUtilsMessengerCallbackDataEXT	pCallbackData
 		pMessage	: null로 끝나는 문자열로서의 디버그 메시지
 		pObjects	: 메시지와 관련된 Vulkan 개체 핸들의 배열
@@ -256,13 +256,13 @@ private:
 		alignas(16) glm::mat4 view;
 		alignas(16) glm::mat4 proj;
 	};
-	
-	const std::vector<uint16_t> indices = 
+
+	const std::vector<uint16_t> indices =
 	{
 		0, 1, 2, 2, 3, 0,
 		4, 5, 6, 6, 7, 4
 	};
-	
+
 	std::vector<AWVkVertex> verties =
 	{
 		AWVertex(AWVec3<float>(-0.5f, -0.5f, 0.0f), AWVec3<float>(0.6f, 0.577f, 0.0f), AWVec2<float>(1.0f, 0.0f)),
@@ -279,15 +279,15 @@ private:
 		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
 		AWVertex(AWVec2<float>(0.438f, -0.791f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
 		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-																			   
+
 		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
 		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
 		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-																			   
+
 		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
 		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
 		AWVertex(AWVec2<float>(0.367f, -0.298f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-																			   
+
 		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
 		AWVertex(AWVec2<float>(0.367f, -0.298f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
 		AWVertex(AWVec2<float>(0.149f, -0.238f), AWVec3<float>(1.0f, 0.8f, 0.0f)),

@@ -21,7 +21,7 @@ private:
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-		window = glfwCreateWindow(WIDTH, HEIGHT, "vulkan", nullptr, nullptr);
+		window = glfwCreateWindow(WIDTH, HEIGHT, "AW", nullptr, nullptr);
 
 		localLogger.Logging(Log::Level::Normal, Log::Task::Application, Log::State::Done, "...Created Window");
 	}
@@ -73,7 +73,7 @@ private:
 		vulkan->CreateCommandPool();
 		vulkan->CreateDepthResource();
 		vulkan->CreateFramebuffers();
-		
+
 		vulkan->CreateTextureImage();
 		vulkan->CreateTextureImageView();
 		vulkan->CreateTextureSampler();
@@ -125,7 +125,7 @@ private:
 public:
 	const int WIDTH = 800;
 	const int HEIGHT = 600;
-	
+
 private:
 	BackendVulkan * vulkan = nullptr;
 	GLFWwindow * window = nullptr;
@@ -136,7 +136,7 @@ private:
 int main()
 {
 	HelloTriangleApplication app;
-	
+
 	try
 	{
 		app.Run();
