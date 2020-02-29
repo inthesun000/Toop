@@ -109,7 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\glm-0.9.9.3\glm;$(SolutionDir)External\glfw\3.3.2\include;$(SolutionDir)External\stb;C:\VulkanSDK\1.1.130.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\glm-0.9.9.3\glm;$(SolutionDir)External\glfw\3.3.2\include;$(SolutionDir)External\stb_image;C:\VulkanSDK\1.1.130.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>AWInclude.h</PrecompiledHeaderFile>
     </ClCompile>
