@@ -133,6 +133,8 @@ public:
 		}
 	}
 
+	void LoadModel();
+
 	/*
 	@param VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT : 진단 메시지
@@ -221,7 +223,6 @@ private:
 	std::vector<VkSemaphore> renderFinishSemaphores;
 	std::vector<VkFence> inFlightFences;
 
-	VkBuffer vertexBuffer, indexBuffer;
 	VkDeviceMemory vertexBufferMemory, indexBufferMemory;
 
 	VkDescriptorSetLayout descriptorSetLayout;
@@ -248,6 +249,11 @@ private:
 	uint32_t WIDTH = 1;
 	uint32_t HEIGHT = 1;
 
+	// Modeling
+	const std::string objPath = "../Asset/chalet.obj";
+	const std::string texturePath = "../Asset/chalet.jpg";
+	VkBuffer vertexBuffer, indexBuffer;
+
 	size_t CurrentFrame = 0;
 
 	struct UniformBufferObject
@@ -257,77 +263,9 @@ private:
 		alignas(16) glm::mat4 proj;
 	};
 
-	const std::vector<uint16_t> indices =
-	{
-		0, 1, 2, 2, 3, 0,
-		4, 5, 6, 6, 7, 4
-	};
+	std::vector<uint32_t> indices;
+	std::vector<AWVkVertex> verties;
 
-	std::vector<AWVkVertex> verties =
-	{
-		AWVertex(AWVec3<float>(-0.5f, -0.5f, 0.0f), AWVec3<float>(0.6f, 0.577f, 0.0f), AWVec2<float>(1.0f, 0.0f)),
-		AWVertex(AWVec3<float>(0.5f, -0.5f, 0.0f), AWVec3<float>(1.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 0.0f)),
-		AWVertex(AWVec3<float>(0.5f, 0.5f, 0.0f), AWVec3<float>(0.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 1.0f)),
-		AWVertex(AWVec3<float>(-0.5f, 0.5f, 0.0f), AWVec3<float>(0.0f, 0.8f, 1.0f), AWVec2<float>(1.0f, 1.0f)),
-
-		AWVertex(AWVec3<float>(-0.5f, -0.5f, -0.5f), AWVec3<float>(0.6f, 0.577f, 0.0f), AWVec2<float>(1.0f, 0.0f)),
-		AWVertex(AWVec3<float>(0.5f, -0.5f, -0.5f), AWVec3<float>(1.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 0.0f)),
-		AWVertex(AWVec3<float>(0.5f, 0.5f, -0.5f), AWVec3<float>(0.0f, 0.8f, 0.0f), AWVec2<float>(0.0f, 1.0f)),
-		AWVertex(AWVec3<float>(-0.5f, 0.5f, -0.5f), AWVec3<float>(0.0f, 0.8f, 1.0f), AWVec2<float>(1.0f, 1.0f))
-		/*
-		//first
-		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.438f, -0.791f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.226f, -0.734f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.519f, -0.576f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.367f, -0.298f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.074f, -0.447f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.367f, -0.298f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.149f, -0.238f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		// second
-		AWVertex(AWVec2<float>(0.283f, -0.014f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.432f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.432f, 0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.432f, 0.164f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
-		AWVertex(AWVec2<float>(0.432f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.746f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.432f, 0.164f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
-		AWVertex(AWVec2<float>(0.746f, -0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.746f, 0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.746f, -0.164f), AWVec3<float>(0.6f, 0.577f, 0.0f)),
-		AWVertex(AWVec2<float>(0.904f, 0.005f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.746f, 0.164f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		//third
-		AWVertex(AWVec2<float>(0.149f, 0.238f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
-		AWVertex(AWVec2<float>(0.367f, 0.292f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.074f, 0.447f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.074f, 0.447f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
-		AWVertex(AWVec2<float>(0.367f, 0.292f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.220f, 0.740f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.220f, 0.740f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
-		AWVertex(AWVec2<float>(0.367f, 0.292f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.498f, 0.582f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-
-		AWVertex(AWVec2<float>(0.220f, 0.740f), AWVec3<float>(0.6f, 0.577f, 0.26f)),
-		AWVertex(AWVec2<float>(0.498f, 0.582f), AWVec3<float>(1.0f, 0.8f, 0.0f)),
-		AWVertex(AWVec2<float>(0.426f, 0.791f), AWVec3<float>(1.0f, 0.8f, 0.0f))
-		*/
-	};
-	//-0.5, 0.5
 	//logger!!
 	Log::AWLogger localLogger;
 

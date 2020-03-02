@@ -11,6 +11,7 @@
 #include <array>
 #include <limits>
 #include <algorithm>
+#include <unordered_map>
 
 #define VK_USE_PLATFORM_WIN32_KHR
 #include <vulkan/vulkan.h>

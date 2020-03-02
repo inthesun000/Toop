@@ -78,6 +78,7 @@ private:
 		vulkan->CreateTextureImageView();
 		vulkan->CreateTextureSampler();
 
+		vulkan->LoadModel();
 		vulkan->CreateVertexBuffer();
 		vulkan->CreateIndexBuffer();
 		vulkan->CreateUniformBuffers();

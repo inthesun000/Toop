@@ -34,8 +34,8 @@ public:
 	AWVkVertex(AWVertex&& vertex) : vertexData(vertex) {};
 	~AWVkVertex();
 
-	VkVertexInputBindingDescription GetVertexBindingDescription();
-	std::array<VkVertexInputAttributeDescription, 3> GetVertexAttributeDescription();
+	static VkVertexInputBindingDescription GetVertexBindingDescription();
+	static std::array<VkVertexInputAttributeDescription, 3> GetVertexAttributeDescription();
 };
 
 

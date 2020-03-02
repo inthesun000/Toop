@@ -5,9 +5,12 @@
 #include <chrono>
 
 // It is image library
-// but will change AWImageLoder
+// TODO: change AWImageLoder
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
 
 BackendVulkan::BackendVulkan()
 {
@@ -435,8 +438,8 @@ void BackendVulkan::CreateGraphicsPipeline()
 
 	/* Step 2 : Input vertex */
 
-	auto bindingDescriptions = verties[0].GetVertexBindingDescription();
-	auto attributeDescriptions = verties[0].GetVertexAttributeDescription();
+	auto bindingDescriptions = AWVkVertex::GetVertexBindingDescription();
+	auto attributeDescriptions = AWVkVertex::GetVertexAttributeDescription();
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -672,7 +675,7 @@ void BackendVulkan::CreateCommandBuffers()
 		VkBuffer vertexBuffers[] = { vertexBuffer };
 		VkDeviceSize offsets[] = { 0 };
 		vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
-		vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+		vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 		vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout,
 			0, 1, &descriptorSets[i], 0, nullptr);
@@ -874,22 +877,22 @@ void BackendVulkan::CreateIndexBuffer()
 	VkDeviceMemory stagingBufferMemory;
 
 	CreateBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		stagingBuffer, stagingBufferMemory);
+VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+stagingBuffer, stagingBufferMemory);
 
-	void* data;
-	vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
-	memcpy(data, indices.data(), (size_t)bufferSize);
-	vkUnmapMemory(device, stagingBufferMemory);
+void* data;
+vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
+memcpy(data, indices.data(), (size_t)bufferSize);
+vkUnmapMemory(device, stagingBufferMemory);
 
-	CreateBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
-		VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-		indexBuffer, indexBufferMemory);
+CreateBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+	VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+	indexBuffer, indexBufferMemory);
 
-	CopyBuffer(stagingBuffer, indexBuffer, bufferSize);
+CopyBuffer(stagingBuffer, indexBuffer, bufferSize);
 
-	vkDestroyBuffer(device, stagingBuffer, nullptr);
-	vkFreeMemory(device, stagingBufferMemory, nullptr);
+vkDestroyBuffer(device, stagingBuffer, nullptr);
+vkFreeMemory(device, stagingBufferMemory, nullptr);
 }
 
 void BackendVulkan::CreateDescriptorSetLayout()
@@ -951,7 +954,7 @@ void BackendVulkan::UpdateUniformBuffer(uint32_t currentImage)
 		currentTime - startTime).count();
 
 	UniformBufferObject ubo = {};
-	ubo.model = glm::rotate(glm::mat4(1.0f), time*glm::radians(90.0f),
+	ubo.model = glm::rotate(glm::mat4(1.0f), time * 0.3f * glm::radians(90.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f));
 	ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f));
@@ -964,6 +967,47 @@ void BackendVulkan::UpdateUniformBuffer(uint32_t currentImage)
 	vkMapMemory(device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
 	memcpy(data, &ubo, sizeof(ubo));
 	vkUnmapMemory(device, uniformBuffersMemory[currentImage]);
+}
+
+void BackendVulkan::LoadModel()
+{
+	tinyobj::attrib_t attribt;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string warn, err;
+
+	if (!tinyobj::LoadObj(&attribt, &shapes, &materials, &err, objPath.c_str()))
+	{
+		throw std::runtime_error(err);
+	}
+
+//	std::unordered_map<AWVertex, uint32_t> uniqueVerties = {};
+
+	for (auto& shape : shapes)
+	{
+		for (auto& index : shape.mesh.indices)
+		{
+			AWVec3<float> pos(static_cast<float>(attribt.vertices[3 * index.vertex_index + 0]),
+							  static_cast<float>(attribt.vertices[3 * index.vertex_index + 1]),
+						      static_cast<float>(attribt.vertices[3 * index.vertex_index + 2]));
+
+			AWVec3<float> color(1.0, 1.0, 1.0);
+
+			AWVec2<float> texCoord(static_cast<float>(attribt.texcoords[2 * index.texcoord_index + 0]),
+								   static_cast<float>(1.0f - attribt.texcoords[2 * index.texcoord_index + 1]));
+
+			AWVertex v(pos, color, texCoord);
+
+			//if(uniqueVerties.count(v) == 0)
+			//{
+			//	uniqueVerties[v] = static_cast<uint32_t>(verties.size());
+			//	verties.push_back(v);
+			//}
+			//indices.push_back(uniqueVerties[v]);
+			verties.push_back(v);
+			indices.push_back(indices.size());
+		}
+	}
 }
 
 void BackendVulkan::CreateDescriptorPool()
@@ -1045,8 +1089,7 @@ void BackendVulkan::CreateTextureImage()
 {
 	int texWidth, texHeight, texChannels;
 
-	std::string fileName = "texture.jpg";
-	std::string path = AWFileManager::GetAssetPath() + fileName;
+	std::string path = /*AWFileManager::GetAssetPath() +*/ texturePath;
 	stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight,
 		&texChannels, STBI_rgb_alpha);
 	VkDeviceSize imageSize = texWidth * texHeight * 4;
@@ -1313,8 +1356,8 @@ void BackendVulkan::CreateTextureSampler()
 	samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 	samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 
-	samplerInfo.anisotropyEnable = VK_TRUE;
-	samplerInfo.maxAnisotropy = 16;
+	//samplerInfo.anisotropyEnable = VK_TRUE;
+	//samplerInfo.maxAnisotropy = 16;
 
 	samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
 	samplerInfo.unnormalizedCoordinates = VK_FALSE;
