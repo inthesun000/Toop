@@ -97,7 +97,7 @@ public:
 	void CreateDescriptorSets();
 
 	void CreateTextureImage();
-	void CreateImage(uint32_t width, uint32_t height, VkFormat format,
+	void CreateImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkSampleCountFlagBits count, VkFormat format,
 		VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties,
 		VkImage& image, VkDeviceMemory& imageMemory);
 
@@ -105,15 +105,16 @@ public:
 	void EndSingleTImeCommands(VkCommandBuffer commandBuffer);
 
 	void TransitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout,
-		VkImageLayout newLayout);
+		VkImageLayout newLayout, uint32_t mipLevels);
 
 	void CopyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 
 	void CreateTextureImageView();
-	VkImageView CreateImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
+	VkImageView CreateImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t mipLevels);
 	void CreateTextureSampler();
 
 	void CreateDepthResource();
+	void CreateColorResource();
 	VkFormat FindSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling,
 		VkFormatFeatureFlags features);
 
@@ -189,6 +190,10 @@ private:
 
 	uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
+	void GenerateMipmaps(VkImage image, VkFormat imageFormat, int32_t width, int32_t height, uint32_t mipLevels);
+
+	VkSampleCountFlagBits GetMaxUsableSampleCount();
+
 private:
 	VkInstance instance;
 	VkResult result;
@@ -232,15 +237,18 @@ private:
 	std::vector<VkBuffer> uniformBuffers;
 	std::vector<VkDeviceMemory> uniformBuffersMemory;
 
+	VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
+
 	VkImage textureImage;
+	uint32_t textureMipLevels;
 	VkDeviceMemory textureImageMemory;
 
 	VkImageView textureImageView;
 	VkSampler textureSampler;
 
-	VkImage depthImage;
-	VkDeviceMemory depthImageMemory;
-	VkImageView depthImageView;
+	VkImage depthImage, colorImage;
+	VkDeviceMemory depthImageMemory, colorImageMemory;
+	VkImageView depthImageView, colorImageView;
 
 	const std::vector<const char*> validationLayers = { "VK_LAYER_LUNARG_standard_validation" };
 	const std::vector<const char*> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
@@ -264,7 +272,7 @@ private:
 	};
 
 	std::vector<uint32_t> indices;
-	std::vector<AWVkVertex> verties;
+	std::vector<AWVertex> verties;
 
 	//logger!!
 	Log::AWLogger localLogger;

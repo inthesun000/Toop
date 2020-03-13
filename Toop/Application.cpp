@@ -71,6 +71,7 @@ private:
 		vulkan->CreateGraphicsPipeline();
 
 		vulkan->CreateCommandPool();
+		vulkan->CreateColorResource();
 		vulkan->CreateDepthResource();
 		vulkan->CreateFramebuffers();
 
@@ -124,8 +125,8 @@ private:
 		localLogger.Logging(Log::Level::Normal, Log::Task::Application, Log::State::Done, "...CleanUp Application");
 	}
 public:
-	const int WIDTH = 800;
-	const int HEIGHT = 600;
+	const int WIDTH = 1600;
+	const int HEIGHT = 1200;
 
 private:
 	BackendVulkan * vulkan = nullptr;

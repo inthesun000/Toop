@@ -2,11 +2,7 @@
 #include "AWVkVertex.h"
 
 
-AWVkVertex::~AWVkVertex()
-{
-}
-
-VkVertexInputBindingDescription AWVkVertex::GetVertexBindingDescription()
+VkVertexInputBindingDescription AWVertex::GetVertexBindingDescription()
 {
 	VkVertexInputBindingDescription desc;
 
@@ -18,7 +14,7 @@ VkVertexInputBindingDescription AWVkVertex::GetVertexBindingDescription()
 }
 
 
-std::array<VkVertexInputAttributeDescription, 3> AWVkVertex::GetVertexAttributeDescription()
+std::array<VkVertexInputAttributeDescription, 3> AWVertex::GetVertexAttributeDescription()
 {
 	//TODO: How to use general perpose?
 	std::array<VkVertexInputAttributeDescription, 3> attributeDesc = {};

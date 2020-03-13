@@ -21,21 +21,24 @@ struct AWVertex
 		color = _color;
 		texCoord = _texCoord;
 	}
-};
-
-
-class AWVkVertex
-{
-private:
-	AWVertex vertexData;
-public:
-	AWVkVertex() = delete;
-	AWVkVertex(AWVertex& vertex) : vertexData(vertex) {};
-	AWVkVertex(AWVertex&& vertex) : vertexData(vertex) {};
-	~AWVkVertex();
 
 	static VkVertexInputBindingDescription GetVertexBindingDescription();
 	static std::array<VkVertexInputAttributeDescription, 3> GetVertexAttributeDescription();
 };
+
+
+//class AWVkVertex
+//{
+//private:
+//	AWVertex vertexData;
+//public:
+//	AWVkVertex() = delete;
+//	AWVkVertex(AWVertex& vertex) : vertexData(vertex) {};
+//	AWVkVertex(AWVertex&& vertex) : vertexData(vertex) {};
+//	~AWVkVertex();
+//
+//	static VkVertexInputBindingDescription GetVertexBindingDescription();
+//	static std::array<VkVertexInputAttributeDescription, 3> GetVertexAttributeDescription();
+//};
 
 
